@@ -75,7 +75,6 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
         _this2.dialogControllers.push(controller);
 
         controller.slot.attached();
-        controller.centerDialog();
 
         modalOverlay.onclick = function () {
           if (!settings.lock) {
@@ -124,19 +123,6 @@ define(['exports', 'aurelia-templating'], function (exports, _aureliaTemplating)
         document.body.removeChild(modalContainer);
         controller.slot.detached();
         return Promise.resolve();
-      };
-
-      controller.centerDialog = function () {
-        var child = modalContainer.children[0];
-
-        var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-        child.style.marginLeft = Math.max((vw - child.offsetWidth) / 2, 0) + 'px';
-
-        if (!settings.centerHorizontalOnly) {
-          var vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-          child.style.marginTop = Math.max((vh - child.offsetHeight) / 2, 30) + 'px';
-        }
       };
 
       return Promise.resolve();
