@@ -24,8 +24,7 @@ function getNextZIndex() {
 }
 
 export let globalSettings = {
-  lock: true,
-  centerHorizontalOnly: false
+  lock: true
 };
 
 export class DialogRenderer {
@@ -59,13 +58,7 @@ export class DialogRenderer {
 
     dialogController.showDialog = () => {
       this.dialogControllers.push(dialogController);
-
-<<<<<<< HEAD
-      controller.slot.attached();
-=======
       dialogController.slot.attached();
-      dialogController.centerDialog();
->>>>>>> refs/remotes/aurelia/master
 
       modalOverlay.onclick = () => {
         if (!settings.lock) {
@@ -118,23 +111,7 @@ export class DialogRenderer {
       dialogController.slot.detached();
       return Promise.resolve();
     };
-
-<<<<<<< HEAD
-=======
-    dialogController.centerDialog = () => {
-      let child = modalContainer.children[0];
-
-      let vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-      child.style.marginLeft = Math.max((vw - child.offsetWidth) / 2, 0) + 'px';
-
-      if (!settings.centerHorizontalOnly) {
-        let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        // Left at least 30px from the top
-        child.style.marginTop = Math.max((vh - child.offsetHeight) / 2, 30) + 'px';
-      }
-    };
-
->>>>>>> refs/remotes/aurelia/master
+	
     return Promise.resolve();
   }
 

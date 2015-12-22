@@ -30,8 +30,7 @@ function getNextZIndex() {
 }
 
 var globalSettings = {
-  lock: true,
-  centerHorizontalOnly: false
+  lock: true
 };
 
 exports.globalSettings = globalSettings;
@@ -74,13 +73,7 @@ var DialogRenderer = (function () {
 
     dialogController.showDialog = function () {
       _this2.dialogControllers.push(dialogController);
-
-<<<<<<< HEAD
-      controller.slot.attached();
-=======
       dialogController.slot.attached();
-      dialogController.centerDialog();
->>>>>>> refs/remotes/aurelia/master
 
       modalOverlay.onclick = function () {
         if (!settings.lock) {
@@ -134,22 +127,6 @@ var DialogRenderer = (function () {
       return Promise.resolve();
     };
 
-<<<<<<< HEAD
-=======
-    dialogController.centerDialog = function () {
-      var child = modalContainer.children[0];
-
-      var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-      child.style.marginLeft = Math.max((vw - child.offsetWidth) / 2, 0) + 'px';
-
-      if (!settings.centerHorizontalOnly) {
-        var vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-        child.style.marginTop = Math.max((vh - child.offsetHeight) / 2, 30) + 'px';
-      }
-    };
-
->>>>>>> refs/remotes/aurelia/master
     return Promise.resolve();
   };
 

@@ -48,7 +48,6 @@ ai-dialog {
   border-image-width: initial;
   border-image-outset: initial;
   border-image-repeat: initial;
-  background: white;
 }
 ai-dialog > ai-dialog-header {
   display: block;
@@ -108,7 +107,4 @@ ai-dialog > ai-dialog-footer button:hover {
 ai-dialog  > ai-dialog-footer button:focus,
 ai-dialog  > ai-dialog-header  > button:focus {
   outline: 0;
-}
-.ai-dialog-open {
-  overflow: hidden;
 }
