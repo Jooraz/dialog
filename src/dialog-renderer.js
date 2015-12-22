@@ -42,8 +42,8 @@ export class DialogRenderer {
     });
   }
 
-  createDialogHost(controller) {
-    let settings = controller.settings;
+  createDialogHost(dialogController) {
+    let settings = dialogController.settings;
     let modalOverlay = document.createElement('ai-dialog-overlay');
     let modalContainer = document.createElement('ai-dialog-container');
     let body = document.body;
@@ -54,17 +54,22 @@ export class DialogRenderer {
     document.body.appendChild(modalOverlay);
     document.body.appendChild(modalContainer);
 
-    controller.slot = new ViewSlot(modalContainer, true);
-    controller.slot.add(controller.view);
+    dialogController.slot = new ViewSlot(modalContainer, true);
+    dialogController.slot.add(dialogController.view);
 
-    controller.showDialog = () => {
-      this.dialogControllers.push(controller);
+    dialogController.showDialog = () => {
+      this.dialogControllers.push(dialogController);
 
+<<<<<<< HEAD
       controller.slot.attached();
+=======
+      dialogController.slot.attached();
+      dialogController.centerDialog();
+>>>>>>> refs/remotes/aurelia/master
 
       modalOverlay.onclick = () => {
         if (!settings.lock) {
-          controller.cancel();
+          dialogController.cancel();
         } else {
           return false;
         }
@@ -73,7 +78,10 @@ export class DialogRenderer {
       return new Promise((resolve) => {
         modalContainer.addEventListener(transitionEvent, onTransitionEnd);
 
-        function onTransitionEnd() {
+        function onTransitionEnd(e) {
+          if (e.target !== modalContainer) {
+            return;
+          }
           modalContainer.removeEventListener(transitionEvent, onTransitionEnd);
           resolve();
         }
@@ -84,8 +92,8 @@ export class DialogRenderer {
       });
     };
 
-    controller.hideDialog = () => {
-      let i = this.dialogControllers.indexOf(controller);
+    dialogController.hideDialog = () => {
+      let i = this.dialogControllers.indexOf(dialogController);
       if (i !== -1) {
         this.dialogControllers.splice(i, 1);
       }
@@ -104,25 +112,41 @@ export class DialogRenderer {
       });
     };
 
-    controller.destroyDialogHost = () => {
+    dialogController.destroyDialogHost = () => {
       document.body.removeChild(modalOverlay);
       document.body.removeChild(modalContainer);
-      controller.slot.detached();
+      dialogController.slot.detached();
       return Promise.resolve();
     };
 
+<<<<<<< HEAD
+=======
+    dialogController.centerDialog = () => {
+      let child = modalContainer.children[0];
+
+      let vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      child.style.marginLeft = Math.max((vw - child.offsetWidth) / 2, 0) + 'px';
+
+      if (!settings.centerHorizontalOnly) {
+        let vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        // Left at least 30px from the top
+        child.style.marginTop = Math.max((vh - child.offsetHeight) / 2, 30) + 'px';
+      }
+    };
+
+>>>>>>> refs/remotes/aurelia/master
     return Promise.resolve();
   }
 
-  showDialog(controller) {
-    return controller.showDialog();
+  showDialog(dialogController) {
+    return dialogController.showDialog();
   }
 
-  hideDialog(controller) {
-    return controller.hideDialog();
+  hideDialog(dialogController) {
+    return dialogController.hideDialog();
   }
 
-  destroyDialogHost(controller) {
-    return controller.destroyDialogHost();
+  destroyDialogHost(dialogController) {
+    return dialogController.destroyDialogHost();
   }
 }

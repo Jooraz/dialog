@@ -55,10 +55,10 @@ var DialogRenderer = (function () {
     });
   }
 
-  DialogRenderer.prototype.createDialogHost = function createDialogHost(controller) {
+  DialogRenderer.prototype.createDialogHost = function createDialogHost(dialogController) {
     var _this2 = this;
 
-    var settings = controller.settings;
+    var settings = dialogController.settings;
     var modalOverlay = document.createElement('ai-dialog-overlay');
     var modalContainer = document.createElement('ai-dialog-container');
     var body = document.body;
@@ -69,17 +69,22 @@ var DialogRenderer = (function () {
     document.body.appendChild(modalOverlay);
     document.body.appendChild(modalContainer);
 
-    controller.slot = new _aureliaTemplating.ViewSlot(modalContainer, true);
-    controller.slot.add(controller.view);
+    dialogController.slot = new _aureliaTemplating.ViewSlot(modalContainer, true);
+    dialogController.slot.add(dialogController.view);
 
-    controller.showDialog = function () {
-      _this2.dialogControllers.push(controller);
+    dialogController.showDialog = function () {
+      _this2.dialogControllers.push(dialogController);
 
+<<<<<<< HEAD
       controller.slot.attached();
+=======
+      dialogController.slot.attached();
+      dialogController.centerDialog();
+>>>>>>> refs/remotes/aurelia/master
 
       modalOverlay.onclick = function () {
         if (!settings.lock) {
-          controller.cancel();
+          dialogController.cancel();
         } else {
           return false;
         }
@@ -88,7 +93,10 @@ var DialogRenderer = (function () {
       return new Promise(function (resolve) {
         modalContainer.addEventListener(transitionEvent, onTransitionEnd);
 
-        function onTransitionEnd() {
+        function onTransitionEnd(e) {
+          if (e.target !== modalContainer) {
+            return;
+          }
           modalContainer.removeEventListener(transitionEvent, onTransitionEnd);
           resolve();
         }
@@ -99,8 +107,8 @@ var DialogRenderer = (function () {
       });
     };
 
-    controller.hideDialog = function () {
-      var i = _this2.dialogControllers.indexOf(controller);
+    dialogController.hideDialog = function () {
+      var i = _this2.dialogControllers.indexOf(dialogController);
       if (i !== -1) {
         _this2.dialogControllers.splice(i, 1);
       }
@@ -119,26 +127,42 @@ var DialogRenderer = (function () {
       });
     };
 
-    controller.destroyDialogHost = function () {
+    dialogController.destroyDialogHost = function () {
       document.body.removeChild(modalOverlay);
       document.body.removeChild(modalContainer);
-      controller.slot.detached();
+      dialogController.slot.detached();
       return Promise.resolve();
     };
 
+<<<<<<< HEAD
+=======
+    dialogController.centerDialog = function () {
+      var child = modalContainer.children[0];
+
+      var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      child.style.marginLeft = Math.max((vw - child.offsetWidth) / 2, 0) + 'px';
+
+      if (!settings.centerHorizontalOnly) {
+        var vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+        child.style.marginTop = Math.max((vh - child.offsetHeight) / 2, 30) + 'px';
+      }
+    };
+
+>>>>>>> refs/remotes/aurelia/master
     return Promise.resolve();
   };
 
-  DialogRenderer.prototype.showDialog = function showDialog(controller) {
-    return controller.showDialog();
+  DialogRenderer.prototype.showDialog = function showDialog(dialogController) {
+    return dialogController.showDialog();
   };
 
-  DialogRenderer.prototype.hideDialog = function hideDialog(controller) {
-    return controller.hideDialog();
+  DialogRenderer.prototype.hideDialog = function hideDialog(dialogController) {
+    return dialogController.hideDialog();
   };
 
-  DialogRenderer.prototype.destroyDialogHost = function destroyDialogHost(controller) {
-    return controller.destroyDialogHost();
+  DialogRenderer.prototype.destroyDialogHost = function destroyDialogHost(dialogController) {
+    return dialogController.destroyDialogHost();
   };
 
   return DialogRenderer;
